@@ -1,4 +1,6 @@
 {
     "appId": "3KFR--jVg",
-    "auth": {}
+    "auth": {
+        "clientId": "6933fdc115dd88f60d3cece972801ec3"
+    }
 }
