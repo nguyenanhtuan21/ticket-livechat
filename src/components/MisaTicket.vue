@@ -64,7 +64,11 @@ export default {
   },
   methods: {
     async embedPopup() {
-      var cusData = {
+      try {
+        await LiveChat.createDetailsWidget().then((widget) => {
+          // build your logic around the widget
+          widget.on("customer_profile", (profile) => {
+var cusData = {
         customerName: "", // Tên công ty
         phoneNumber: "", // Số điện thoại
         email: "", // Email
@@ -74,11 +78,9 @@ export default {
         version: "", // Phiên bản
         BudgetCode: "", // Mã quan hệ ngân sách
       };
-      try {
-        await LiveChat.createDetailsWidget().then((widget) => {
-          // build your logic around the widget
-          widget.on("customer_profile", (profile) => {
-            if (profile) {
+
+            if (profile && profile.customVariables) {
+		try {
               cusData.customerName =
                 profile.customVariables["Công ty" || "Cty" || undefined] || "";
               cusData.phoneNumber =
@@ -91,11 +93,13 @@ export default {
               cusData.taxCode =
                 profile.customVariables["Mã số thuế"] ||
                 profile.customVariables["MST"] ||
+		profile.customVariables["TaxCode"] ||
                 "";
               cusData.source = profile.customVariables["Nguồn"] || "";
               cusData.version = profile.customVariables["Phiên bản"] || "";
               cusData.BudgetCode = profile.customVariables["Mã QHNS"] || "";
               console.log(456);
+		} catch(error) {}
             }
             // console.log(cusData);
 
